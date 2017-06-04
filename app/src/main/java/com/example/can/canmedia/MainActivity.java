@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements VideoManager.Vide
         } else {
             videoInfos.clear();
         }
-        Log.i(TAG, "preloading");
         videAdapter = new VideAdapter(this, videoInfos);
         videoListView.setAdapter(videAdapter);
         videoListView.setOnItemClickListener(videAdapter);

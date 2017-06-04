@@ -1,6 +1,7 @@
 package com.example.can.canmedia;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
@@ -98,7 +99,12 @@ public class VideAdapter extends BaseAdapter implements AdapterView.OnItemClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         VideoInfo info = videoInfos.get(position);
-        Log.i(TAG, info.name + " p=" + info.filePath);
+        String vedioTitle = info.name;
+        String vedioPath = info.filePath;
+        Intent intent = new Intent(context, VideoActivity.class);
+        intent.putExtra("vedioTitle", vedioTitle);
+        intent.putExtra("vedioPath", vedioPath);
+        context.startActivity(intent);
     }
 
     static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
