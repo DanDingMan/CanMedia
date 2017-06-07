@@ -102,8 +102,8 @@ public class VideAdapter extends BaseAdapter implements AdapterView.OnItemClickL
         String vedioTitle = info.name;
         String vedioPath = info.filePath;
         Intent intent = new Intent(context, VideoActivity.class);
-        intent.putExtra("vedioTitle", vedioTitle);
-        intent.putExtra("vedioPath", vedioPath);
+        intent.putExtra(VideoActivity.VIDEOTITLE, vedioTitle);
+        intent.putExtra(VideoActivity.VIDEOPATH, vedioPath);
         context.startActivity(intent);
     }
 

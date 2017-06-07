@@ -4,27 +4,38 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements VideoManager.VideoCallback {
+public class MainActivity extends BaseActivity implements VideoManager.VideoCallback {
     private static final String TAG = "MainActivity";
     private ListView videoListView;
     private List<VideoInfo> videoInfos;
     private VideAdapter videAdapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        IjkMediaPlayer.loadLibrariesOnce(null);
-//        IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-        videoListView = (ListView) findViewById(R.id.videlist);
-        checkPermission();
+        bindView();
+    }
 
+    @Override
+    protected void onResume() {
+        checkPermission();
+        super.onResume();
+    }
+
+    private void bindView() {
+        videoListView = (ListView) findViewById(R.id.videlist);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.local_video);
+        setSupportActionBar(toolbar);
     }
 
     private void checkPermission() {
@@ -53,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements VideoManager.Vide
         videAdapter = new VideAdapter(this, videoInfos);
         videoListView.setAdapter(videAdapter);
         videoListView.setOnItemClickListener(videAdapter);
+        showProgressDialog();
         VideoManager.getInstance().getVideos(this);
     }
 
@@ -67,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements VideoManager.Vide
             videoInfos.clear();
             videoInfos.addAll(videos);
         }
+        dismissProgressDialog();
         videAdapter.notifyDataSetChanged();
     }
 
