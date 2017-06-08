@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -31,7 +32,6 @@ public class VideoActivity extends AppCompatActivity {
     private String vedioTitle;
     private String vedioPath;
     private AndroidMediaController mMediaController;
-    private String mVideoPath;
     //    private Uri mVideoUri;
     private IjkVideoView mVideoView;
     private TextView mToastTextView;
@@ -51,7 +51,8 @@ public class VideoActivity extends AppCompatActivity {
         } else {
             vedioTitle = intent.getStringExtra(VIDEOTITLE);
             vedioPath = intent.getStringExtra(VIDEOPATH);
-            if (TextUtils.isEmpty(vedioTitle) || TextUtils.isEmpty(VIDEOPATH)) {
+            if (TextUtils.isEmpty(vedioTitle) || TextUtils.isEmpty(vedioPath)) {
+                Log.e(TAG,"title and videopath can not be null");
                 finish();
                 return;
             }
@@ -61,6 +62,8 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     private void initVideo() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         mMediaController = new AndroidMediaController(this, false);
         mMediaController.setSupportActionBar(actionBar);
@@ -80,8 +83,8 @@ public class VideoActivity extends AppCompatActivity {
         mVideoView.setMediaController(mMediaController);
         mVideoView.setHudView(mHudView);
         // prefer mVideoPath
-        if (mVideoPath != null)
-            mVideoView.setVideoPath(mVideoPath);
+        if (vedioPath != null)
+            mVideoView.setVideoPath(vedioPath);
         else {
             Log.e(TAG, "Null Data Source\n");
             finish();
