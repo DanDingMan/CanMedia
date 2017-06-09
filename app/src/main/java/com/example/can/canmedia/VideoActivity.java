@@ -34,13 +34,6 @@ public class VideoActivity extends AppCompatActivity {
     private AndroidMediaController mMediaController;
     //    private Uri mVideoUri;
     private IjkVideoView mVideoView;
-    private TextView mToastTextView;
-    private TableLayout mHudView;
-    private DrawerLayout mDrawerLayout;
-    private ViewGroup mRightDrawer;
-    private Settings mSettings;
-    private boolean mBackPressed;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +45,7 @@ public class VideoActivity extends AppCompatActivity {
             vedioTitle = intent.getStringExtra(VIDEOTITLE);
             vedioPath = intent.getStringExtra(VIDEOPATH);
             if (TextUtils.isEmpty(vedioTitle) || TextUtils.isEmpty(vedioPath)) {
-                Log.e(TAG,"title and videopath can not be null");
+                Log.e(TAG, "title and videopath can not be null");
                 finish();
                 return;
             }
@@ -68,20 +61,11 @@ public class VideoActivity extends AppCompatActivity {
         mMediaController = new AndroidMediaController(this, false);
         mMediaController.setSupportActionBar(actionBar);
 
-        mToastTextView = (TextView) findViewById(R.id.toast_text_view);
-        mHudView = (TableLayout) findViewById(R.id.hud_view);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mRightDrawer = (ViewGroup) findViewById(R.id.right_drawer);
-
-        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
-
-        // init player
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
 
         mVideoView = (IjkVideoView) findViewById(R.id.video_view);
         mVideoView.setMediaController(mMediaController);
-        mVideoView.setHudView(mHudView);
         // prefer mVideoPath
         if (vedioPath != null)
             mVideoView.setVideoPath(vedioPath);
@@ -98,5 +82,18 @@ public class VideoActivity extends AppCompatActivity {
         intent.putExtra(VIDEOTITLE, vedioTitle);
         intent.putExtra(vedioPath, vedioPath);
         super.onNewIntent(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (!mVideoView.isBackgroundPlayEnabled()) {
+            mVideoView.stopPlayback();
+            mVideoView.release(true);
+            mVideoView.stopBackgroundPlay();
+        } else {
+            mVideoView.enterBackground();
+        }
+        IjkMediaPlayer.native_profileEnd();
     }
 }
