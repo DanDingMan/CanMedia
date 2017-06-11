@@ -50,8 +50,14 @@ public class VideoActivity extends AppCompatActivity {
                 return;
             }
             setTitle(vedioTitle);
-            initVideo();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG,"screen onResume");
+        super.onResume();
+        initVideo();
     }
 
     private void initVideo() {
@@ -60,7 +66,6 @@ public class VideoActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         mMediaController = new AndroidMediaController(this, false);
         mMediaController.setSupportActionBar(actionBar);
-
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
 
@@ -74,6 +79,7 @@ public class VideoActivity extends AppCompatActivity {
             finish();
             return;
         }
+        mMediaController.show();
         mVideoView.start();
     }
 
@@ -87,6 +93,7 @@ public class VideoActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i(TAG,"screen onStop");
         if (!mVideoView.isBackgroundPlayEnabled()) {
             mVideoView.stopPlayback();
             mVideoView.release(true);

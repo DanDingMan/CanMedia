@@ -10,7 +10,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="227dp"
-        android:background="#444"
+        android:background="@color/black_overlay"
         tools:context=".VideoActivity">
 
         <tv.danmaku.ijk.media.example.widget.media.IjkVideoView
@@ -24,9 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/ijk_transparent_dark"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            tools:context=".toolbar_widget" />
+            android:minHeight="30dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     </FrameLayout>
 </LinearLayout>
